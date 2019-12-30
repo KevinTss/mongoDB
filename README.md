@@ -60,3 +60,19 @@ Select document in an array where `Jeff` is included at the first position
 
 Select document in an array
 `db.<collection-name>.find({"writers.0": "Ethan Coen", "writers.1": "Joel Coen"})`
+
+### Operators
+
+Comparison [Doc](https://docs.mongodb.com/manual/reference/operator/aggregation/index.html#comparison-expression-operators)
+
+Where `runtime` is greather than 90
+`db.<collection-name>.find({runtime: {$gt: 90}})`
+
+Where `runtime` is greather than 90 & less than 120
+`db.<collection-name>.find({runtime: {$gt: 90, $lt: 120}})`
+
+Where `runtime` is greather or equal to 90 & less or equal to 120
+`db.<collection-name>.find({runtime: {$gte: 90, $lte: 120}})`
+
+Where `rated` is not equal to `UNRATED` : Will also return document where there is no rated field at all
+`db.<collection-name>.find({rated: {$ne: "UNRATED"}})`
