@@ -61,6 +61,31 @@ Select document in an array where `Jeff` is included at the first position
 Select document in an array
 `db.<collection-name>.find({"writers.0": "Ethan Coen", "writers.1": "Joel Coen"})`
 
+Select document in an array including specific field
+`db.<collection-name>.find({"writers.0": "Ethan Coen", "writers.1": "Joel Coen"}, {title: 1})`
+Or excluding setting value to `0`
+`db.<collection-name>.find({"writers.0": "Ethan Coen", "writers.1": "Joel Coen"}, {title: 0})`
+
+#### Update
+
+Update one document (the first matching the filter)
+`db.<collection-name>.updateOne({ title: "The Martian" }, { $set: { poster: "http://www....png" } })`
+
+Update one document (the first matching the filter)
+`const detail = { ... }`
+`db.<collection-name>.updateOne({ "imdb.id": 345678 }, { $set: detail }, { upsert: true })`
+Will check if the detail already is into the document, if yes, it will replace it.
+It avoid me to first fetch the document to manually check before updating.
+
+Update many document (all which match the filter)
+`db.<collection-name>.updateMany({ rated: null }, { $unset: { rated: "" } })`
+In that case we remove all `rated` filed from all document where rated value is `null`
+
+#### Delete
+
+`db.<collection-name>.deleteOne({ _id: ObjectId('24H3J4J5J43JH2H34H34J3K') }})`
+`db.<collection-name>.deleteMany({ reviwer_id: 34567898765 }})`
+
 ### Operators
 
 Comparison [Doc](https://docs.mongodb.com/manual/reference/operator/aggregation/index.html#comparison-expression-operators)
