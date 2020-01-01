@@ -28,6 +28,7 @@ Til your connected with the command above, you are into the mongo shell command 
 - `db.movies.find().pretty()`: Get all document from the collection `movies` in a proper format
 - `quit()`: Exit the shell command line
 - `load()`: Execute a file
+- `.count()`: Return the number of document who match the query
 
 ### CRUD Operation
 
@@ -101,3 +102,40 @@ Where `runtime` is greather or equal to 90 & less or equal to 120
 
 Where `rated` is not equal to `UNRATED` : Will also return document where there is no rated field at all
 `db.<collection-name>.find({rated: {$ne: "UNRATED"}})`
+
+#### Exercice:
+
+> Using the \$in operator, filter the video.movieDetails collection to determine how many movies list "Ethan Coen" or "Joel Coen" among their writers. Your filter should match all movies that list one of the Coen brothers as writers regardless of how many other writers are also listed. Select the number of movies matching this filter from the choices below.
+
+`{writers: {$in: ["Joel Coen", "Ethan Coen"]}}`
+`{$or:[{writers: {$in: ["Joel Coen"]}}, {writers: {$in: ["Ethan Coen"]}}]}`
+
+> Connect to our class Atlas cluster from the mongo shell or Compass and view the ships.shipwrecks collection. In this collection, watlev describes the water level at the shipwreck site and depth describes how far below sea level the ship rests. How many documents in the ships.shipwrecks collection match either of the following criteria: watlev equal to "always dry" or depth equal to 0.
+
+`ships.shipwrecks.find({$or: [{watlev: "always dry"}, {depth: 0}]})`
+
+> Connect to our class Atlas cluster from the mongo shell or Compass and view the 100YWeatherSmall.data collection. The sections field in this collection identifies supplementary readings available in a given document by a three-character code. How many documents list: "AG1", "MD1", and "OA1" among the codes in their sections array. Your count should include all documents that include these three codes regardless of what other codes are also listed.
+
+`100YWeatherSmall.data.find({sections: {$all: ["AG1", "MD1", "OA1"]}})`
+
+> Connect to our class Atlas cluster from the mongo shell or Compass and view the 100YWeatherSmall.data collection. How many documents in this collection contain exactly two elements in the sections array field?
+
+`100YWeatherSmall.data.find({sections: {$size: 2}})`
+
+> In the M001 class Atlas cluster you will find a database added just for this week of the course. It is called results. Within this database you will find two collections: surveys and scores. Documents in the results.surveys collection have the following schema.
+
+```
+{_id: ObjectId("5964e8e5f0df64e7bc2d7373"),
+results: [{product: "abc", score: 10}, {product: "xyz", score: 9}]}
+```
+
+The field called results that has an array as its value. This array contains survey results for products and lists the product name and the survey score for each product.
+
+How many documents in the results.surveys collection contain a score of 7 for the product, "abc"?
+
+`{results:{$elemMatch: {product: "abc", score: 7}}}`
+
+> Connect to our class Atlas cluster from the mongo shell or Compass and view the results.scores collection.
+> How many documents contain at least one score in the results array that is greater than or equal to 70 and less than 80?
+
+`db.scores.find({results: {$elemMatch: {$gte: 70, $lt: 80}}}).count()`
